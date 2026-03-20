@@ -1,0 +1,161 @@
+[gd_scene format=3]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
+size = Vector2(768, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bottom"]
+size = Vector2(768, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left"]
+size = Vector2(16, 384)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_right"]
+size = Vector2(16, 384)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pillar1"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pillar2"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pillar3"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pillar4"]
+size = Vector2(32, 32)
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_1"]
+vertices = PackedVector2Array(32, 16, 736, 16, 736, 368, 32, 368)
+polygons = [PackedInt32Array(0, 1, 2, 3)]
+outlines = [PackedVector2Array(32, 16, 736, 16, 736, 368, 32, 368)]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_north"]
+size = Vector2(64, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_south"]
+size = Vector2(64, 16)
+
+[node name="Room" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+offset_right = 768.0
+offset_bottom = 384.0
+color = Color(0.35, 0.35, 0.35, 1)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 64
+collision_mask = 0
+
+[node name="TopWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(384, 8)
+shape = SubResource("RectangleShape2D_top")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(384, 376)
+shape = SubResource("RectangleShape2D_bottom")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(8, 192)
+shape = SubResource("RectangleShape2D_left")
+
+[node name="RightWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(760, 192)
+shape = SubResource("RectangleShape2D_right")
+
+[node name="Pillars" type="Node2D" parent="."]
+
+[node name="Pillar1" type="StaticBody2D" parent="Pillars"]
+position = Vector2(192, 96)
+collision_layer = 64
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pillars/Pillar1"]
+shape = SubResource("RectangleShape2D_pillar1")
+
+[node name="Visual" type="ColorRect" parent="Pillars/Pillar1"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Pillar2" type="StaticBody2D" parent="Pillars"]
+position = Vector2(192, 256)
+collision_layer = 64
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pillars/Pillar2"]
+shape = SubResource("RectangleShape2D_pillar2")
+
+[node name="Visual" type="ColorRect" parent="Pillars/Pillar2"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Pillar3" type="StaticBody2D" parent="Pillars"]
+position = Vector2(512, 96)
+collision_layer = 64
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pillars/Pillar3"]
+shape = SubResource("RectangleShape2D_pillar3")
+
+[node name="Visual" type="ColorRect" parent="Pillars/Pillar3"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Pillar4" type="StaticBody2D" parent="Pillars"]
+position = Vector2(512, 256)
+collision_layer = 64
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pillars/Pillar4"]
+shape = SubResource("RectangleShape2D_pillar4")
+
+[node name="Visual" type="ColorRect" parent="Pillars/Pillar4"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_1")
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(100, 80)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(100, 300)
+
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(660, 80)
+
+[node name="Spawn4" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(660, 300)
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(384, 340)
+
+[node name="DoorNorth" type="Area2D" parent="."]
+position = Vector2(384, 0)
+collision_layer = 4096
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorNorth"]
+shape = SubResource("RectangleShape2D_door_north")
+
+[node name="DoorSouth" type="Area2D" parent="."]
+position = Vector2(384, 384)
+collision_layer = 4096
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorSouth"]
+shape = SubResource("RectangleShape2D_door_south")

@@ -49,9 +49,13 @@ var _attack_duration: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group("player")
 	invincibility_timer.one_shot = true
 	invincibility_timer.timeout.connect(_on_invincibility_timer_timeout)
 	dodge_cooldown_timer.one_shot = true
+	# Enable attack hitbox monitoring so get_overlapping_bodies works
+	attack_hitbox.monitoring = true
+	attack_hitbox.monitorable = true
 
 
 func _physics_process(delta: float) -> void:
@@ -192,25 +196,25 @@ func start_heavy_attack() -> void:
 func _deal_attack_damage(damage: int, _aoe_radius: float, knockback: float) -> void:
 	if not is_instance_valid(attack_hitbox):
 		return
+	# Hit stop on attack
+	HitStop.trigger(0.05)
 	for body in attack_hitbox.get_overlapping_bodies():
 		if body.has_method("receive_damage"):
-			var damage_event := {
-				"amount": damage,
-				"source": self,
-				"knockback_force": knockback,
-				"knockback_direction": facing_direction,
-			}
-			body.receive_damage(damage_event)
+			var event := DamageEvent.new()
+			event.base_damage = float(damage)
+			event.source = self
+			event.knockback_force = knockback
+			event.knockback_direction = facing_direction
+			body.receive_damage(event)
 
 
-func receive_damage(event: Dictionary) -> void:
+func receive_damage(event: DamageEvent) -> void:
 	if is_invincible:
 		return
 	if current_state == State.DEATH:
 		return
 
-	var amount: float = event.get("amount", 0.0)
-	player_stats.take_damage(amount)
+	player_stats.take_damage(event.base_damage)
 
 	if player_stats.hp <= 0.0:
 		_enter_death()
@@ -219,9 +223,8 @@ func receive_damage(event: Dictionary) -> void:
 	current_state = State.HURT
 
 	# Apply knockback
-	var kb_dir: Vector2 = event.get("knockback_direction", Vector2.ZERO)
-	var kb_force: float = event.get("knockback_force", 0.0)
-	velocity = kb_dir.normalized() * kb_force
+	if event.knockback_force > 0.0 and event.knockback_direction != Vector2.ZERO:
+		velocity = event.knockback_direction.normalized() * event.knockback_force
 
 	# Brief invincibility during hurt
 	is_invincible = true

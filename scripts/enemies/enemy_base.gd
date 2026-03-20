@@ -20,7 +20,7 @@ var _attack_cooldown_timer: float = 0.0
 # Node references
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 @onready var health_bar: ProgressBar = $HealthBar
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: Node2D = $Sprite2D
 @onready var detection_area: Area2D = $DetectionArea
 
 # Preloaded scenes

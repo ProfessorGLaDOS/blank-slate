@@ -1,0 +1,95 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/player/player_visual.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/player/stick_figure.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/player/player_stats.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/player/element_manager.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/core/status_effect_manager.gd" id="6"]
+[ext_resource type="Script" path="res://scripts/player/passive_system.gd" id="7"]
+
+[sub_resource type="CircleShape2D" id="1"]
+radius = 10.0
+
+[sub_resource type="CircleShape2D" id="2"]
+radius = 12.0
+
+[sub_resource type="RectangleShape2D" id="3"]
+size = Vector2(20, 20)
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 1
+collision_mask = 194
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 1312
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("2")
+
+[node name="HitboxPivot" type="Node2D" parent="."]
+
+[node name="AttackHitbox" type="Area2D" parent="HitboxPivot"]
+collision_layer = 16
+collision_mask = 136
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxPivot/AttackHitbox"]
+shape = SubResource("3")
+
+[node name="PlayerVisual" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="StickFigure" type="Node2D" parent="PlayerVisual"]
+script = ExtResource("3")
+
+[node name="ShadowSprite" type="Sprite2D" parent="."]
+position = Vector2(0, 12)
+z_index = -1
+
+[node name="PlayerStats" type="Node" parent="."]
+script = ExtResource("4")
+
+[node name="ElementManager" type="Node" parent="."]
+script = ExtResource("5")
+
+[node name="StatusEffectManager" type="Node" parent="."]
+script = ExtResource("6")
+
+[node name="PassiveSystem" type="Node" parent="."]
+script = ExtResource("7")
+
+[node name="DodgeCooldownTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="DodgeDurationTimer" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[node name="InvincibilityTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="StaminaRegenTimer" type="Timer" parent="."]
+wait_time = 1.0
+one_shot = true
+
+[node name="ComboResetTimer" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[node name="AttackDurationTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
