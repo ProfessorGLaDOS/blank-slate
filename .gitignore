@@ -1,0 +1,20 @@
+# Godot 4 generated files
+.godot/
+
+# Godot import files (re-generated on open)
+*.import
+
+# Export templates and builds
+export/
+build/
+*.pck
+*.zip
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor backups
+*.tmp
+*~
